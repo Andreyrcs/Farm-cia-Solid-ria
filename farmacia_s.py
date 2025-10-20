@@ -1,196 +1,258 @@
-'''import os  # Importa o módulo 'os' para poder usar o comando de limpar tela (cls)
+# SISTEMA FARMÁCIA SOLIDÁRIA
 
-# Lista onde serão armazenados todos os ativos cadastrados
-listaAtivos = []
-
-
-
-# Função principal com o menu de opções
-def menu():
-    escolha = -1  # Inicializa a variável de escolha com um valor que não encerra o programa
-
-    # Loop principal que exibe o menu até o usuário escolher sair
-    while escolha != 0:
-        os.system('cls')  # Limpa a tela
-        print(
- Sistema de Gestão de Ativos 
-
-1 - Cadastrar
-2 - Alterar Status Ativos/Inativos
-3 - Excluir
-4 - Consultar
-5 - Listar
-0 - Sair
-)
-        try:
-            escolha = int(input("Escolha uma opção: "))  # Solicita a escolha do usuário
-        except ValueError:
-            print("O número está invalido")  # Trata erro se digitar letra
-            input()
-            continue
-
-        # Chama a função correspondente à opção escolhida
-        if escolha == 1:
-            cadastrar()
-        elif escolha == 2:
-            alterar()
-        elif escolha == 3:
-            excluir()
-        elif escolha == 4:
-            consultar()
-        elif escolha == 5:
-            listar()
-        elif escolha == 0:
-            print("Saindo do sistema")  # Encerra o programa
-            input()
-        else:
-            print("Opção inválida.")  # Opção fora do menu
-            input()
-# Função para cadastrar um novo ativo
-def cadastrar():
-    os.system('cls')  # Limpa a tela
-    print(" Cadastrar")
-    ativo = {}  # Cria um dicionário vazio para armazenar os dados do ativo
-
-    ativo['id'] = input("ID: ")  # Solicita o ID do ativo ao usuário
-
-    # Verifica se já existe um ativo com o mesmo ID
-    for atv in listaAtivos:
-        if atv['id'] == ativo['id']:
-            print(" Já existe um ativo com esse ID.")
-            input()  # Pausa para o usuário ver a mensagem
-            return  # Sai da função sem cadastrar
-
-    ativo['descricao'] = input("Descrição: ")  # Solicita a descrição
- 	
-
-# Tenta converter os dados para os tipos corretos (float e int)
-# Se o usuário digitar algo inválido (exemplo: letras ao invés de números), o bloco 'except' é ativado para evitar que o programa trave
-    try:
-        ativo['modelo'] = input("Modelo: ")  # Solicita a descrição
-        ativo['valor'] = float(input("Valor: "))  # Solicita e converte o valor para float
-        ativo['quantidade'] = int(input("Quantidade: "))  # Solicita e converte a quantidade para inteiro
-    except ValueError:  # Caso o usuário digite letras em vez de números causando um erro no programa 
-        print(" Valor ou quantidade inválidos.")
-        input()
-        return  # Sai da função sem cadastrar
-
-    ativo['nota_fiscal'] = input("Número da nota fiscal: ")  # Solicita a nota fiscal
-    ativo['status'] = "Ativo"  # Define o status padrão como "Ativo"
-
-    listaAtivos.append(ativo)  # Adiciona o ativo na lista principal
-    print("Ativo cadastrado com sucesso")
-    input()  # Pausa para o usuário ver a mensagem
-
-# Função para alterar o status do ativo (Ativo ↔ Inativo)
-def alterar():
-    os.system('cls')  # Limpa a tela
-    print(" Alterar Status do Ativo ")
-    id_busca = input("Digite o ID do ativo: ")  # Solicita o ID a ser alterado
-
-    # Procura o ativo pelo ID
-    for atv in listaAtivos:
-        if atv['id'] == id_busca:
-            # Altera o status para o contrário do atual
-            atv['status'] = "Inativo" if atv['status'] == "Ativo" else "Ativo"
-            print(f" Status alterado para {atv['status']}")
-            input()
-            return  # Sai da função após alterar
-    print(" Ativo não encontrado.")
-    input()
-
-# Função para excluir um ativo
-def excluir():
-    os.system('cls')  # Limpa a tela
-    print(" Excluir Ativo ")
-    id_excluir = input("Digite o ID do ativo: ")  # Solicita o ID do ativo a ser excluído
-
-    # Procura o ativo na lista
-    for atv in listaAtivos:
-        if atv['id'] == id_excluir:
-            listaAtivos.remove(atv)  # Remove o ativo da lista
-            print("Ativo excluído com sucesso")
-            input()
-            return
-    print("Ativo não encontrado.")
-    input()
-
-# Função para consultar um ativo específico por ID
-def consultar():
-    os.system('cls')  # Limpa a tela
-    print(" Consultar Ativo")
-    id_consulta = input("Digite o ID do ativo: ")  # Solicita o ID
-
-    # Procura o ativo na lista
-    for atv in listaAtivos:
-        if atv['id'] == id_consulta:
-            # Exibe os dados do ativo
-            print(f"ID: {atv['id']}")
-            print(f"Descrição: {atv['descricao']}")
-            print(f"Modelo: {atv['modelo']}")
-            print(f"Valor: R$ {atv['valor']:.2f}")
-            print(f"Quantidade: {atv['quantidade']}")
-            print(f"Nota Fiscal: {atv['nota_fiscal']}")
-            print(f"Status: {atv['status']}")
-            input()
-            return
-    print("Ativo não encontrado.")
-    input()
-
-# Função para listar todos os ativos cadastrados
-def listar():
-    os.system('cls')  # Limpa a tela
-    print(" Lista de Ativos ")
-
-    # Verifica se a lista está vazia
-    if not listaAtivos:
-        print("Nenhum ativo cadastrado.")
-    else:
-        # Exibe todos os ativos da lista
-        for atv in listaAtivos:
-            print(f"ID: {atv['id']}  | Descrição: {atv['descricao']}  | Modelo: {atv['modelo']} | Valor: R$ {atv['valor']:.2f} | "
-                  f"Qtd: {atv['quantidade']} | Nota Fiscal: {atv['nota_fiscal']} | Status: {atv['status']}")
-    input()
-
-# Inicia o programa executando o menu
-menu()'''
+medicamentos = []  # lista que vai armazenar todos os medicamentos cadastrados
+clientes = []      # lista que vai armazenar os clientes doador ou requisitante
+historico = []     # lista que vai guardar o histórico geral de doações e requisições
+pilha_acoes = []   # pilha que vai armazenar as últimas ações feitas, tipo um histórico rápido
 
 
-def menu():
-    print("\n      Farmacia Solidária     \n")
-    print("1 - Cadastrar Medicamento")
-    print("2 - Listar Medicamentos")
-    print("3 - Buscar Medicamento por Nome")
-    print("4 - requisitar Medicamento")
-    print("0 - Sair")
+# CLASSE DO NÓ DA ÁRVORE BINÁRIA
 
-def cadastrar(medicamentos):
-    print("\n--- Cadastrar Medicamento ---")
-    id_medicamento = input("ID do Medicamento: ")
-    nome = input("Nome do Medicamento: ")
-    quantidade = int(input("Quantidade: "))
-    validade = int(input("Validade (DD/MM/AAAA): "))
-    lote = input("Lote: ")
-    medicamentos = {'ID': id_medicamento, 'nome': nome, 'quantidade': quantidade, 'validade': validade, 'lote': lote}
-    medicamentos.append(medicamentos)
-    print(f"Medicamento {nome} cadastrado com sucesso!\n")
+import os  # importa biblioteca para executar comandos do sistema (como limpar a tela)
+
+def limpar_tela():  
+    os.system('cls' if os.name == 'nt' else 'clear')  # limpa a tela: 'cls' no Windows, 'clear' no Linux/Mac
     
-def listar(medicamentos):
-    print("\n--- Lista de Medicamentos ---")
-    if len(medicamentos) == 0:
-        print("Nenhum medicamento cadastrado.\n")
-        return
-    
-    for med in medicamentos:
-        print(f"ID: {med[1]} | Nome: {med[2]} | Quantidade: {med[3]} | Validade: {med[4]} | Lote: {med[5]} ")
-    
-    def buscar(medicamentos):
-        print("\n--- Buscar Medicamento por Nome ---")
-        nome_busca = input("Digite o nome do medicamento: ")
-        encontrados = [med for med in medicamentos if med['nome'].lower() == nome_busca.lower()]
-        
-        if encontrados:
-            for med in encontrados:
-                print(f"ID: {med['ID']} | Nome: {med['nome']} | Quantidade: {med['quantidade']} | Validade: {med['validade']} | Lote: {med['lote']}")
-        else:
-            print("Medicamento não encontrado.\n")
+while True:  
+    limpar_tela()  # chama a função para limpar a tela
+    print("\n      Farmacia Solidária     \n")  # imprime o título do sistema
+    break  # sai do loop após limpar a tela e mostrar o título
+
+class NoMedicamento:  
+    def __init__(self, nome, dados):  
+        self.nome = nome               # nome do medicamento que vai servir como chave na árvore
+        self.dados = dados             # um dicionário com todos os dados do medicamento
+        self.esquerda = None           # nó filho da esquerda (menor que o nome atual)
+        self.direita = None            # nó filho da direita (maior que o nome atual)
+
+
+# CLASSE ÁRVORE BINÁRIA DE MEDICAMENTOS
+
+class ArvoreMedicamentos:  
+    def __init__(self):  
+        self.raiz = None  # define a raiz da árvore como vazia no começo
+
+    def inserir(self, nome, dados):  
+        self.raiz = self._inserir_recursivo(self.raiz, nome, dados)  # chama a função recursiva para inserir o nó
+
+    def _inserir_recursivo(self, no, nome, dados):  
+        if no is None:  
+            return NoMedicamento(nome, dados)  # se não existir nó, cria um novo nó com o nome e dados
+        if nome.lower() < no.nome.lower():  
+            no.esquerda = self._inserir_recursivo(no.esquerda, nome, dados)  # se nome menor, vai para esquerda
+        elif nome.lower() > no.nome.lower():  
+            no.direita = self._inserir_recursivo(no.direita, nome, dados)   # se nome maior, vai para direita
+        else:  
+            no.dados = dados  # se o nome for igual, apenas atualiza os dados
+        return no  # retorna o nó atualizado
+
+    def buscar(self, nome):  
+        return self._buscar_recursivo(self.raiz, nome)  # função pública que chama a recursiva para buscar o nome
+
+    def _buscar_recursivo(self, no, nome):  
+        if no is None:  
+            return None  # se nó vazio, não encontrou o medicamento
+        if nome.lower() == no.nome.lower():  
+            return no.dados  # se encontrou o nome, retorna os dados
+        elif nome.lower() < no.nome.lower():  
+            return self._buscar_recursivo(no.esquerda, nome)  # se menor, vai para esquerda
+        else:  
+            return self._buscar_recursivo(no.direita, nome)  # se maior, vai para direita
+
+    def listar_em_ordem(self, no):  
+        if no:  
+            self.listar_em_ordem(no.esquerda)  # percorre primeiro o lado esquerdo
+            print(f"Nome: {no.nome} | Quantidade: {no.dados['quantidade']} | Validade: {no.dados['validade']} | Lote: {no.dados['lote']}")  # imprime o nó atual
+            self.listar_em_ordem(no.direita)  # percorre depois o lado direito
+
+arvore = ArvoreMedicamentos()  # cria a árvore de medicamentos vazia
+
+
+# FUNÇÕES DO SISTEMA
+
+def menu():  
+    print("1 - Cadastrar Medicamento")  # opção 1 do menu
+    print("2 - Listar Medicamentos em ordem")  # opção 2 do menu
+    print("3 - Buscar Medicamento por Nome")  # opção 3 do menu
+    print("4 - Requisitar Medicamento")  # opção 4 do menu
+    print("5 - Cadastrar Nome e Tipo de Cliente")  # opção 5 do menu
+    print("6 - Listar Clientes")  # opção 6 do menu
+    print("7 - Histórico de Requisições e Doações")  # opção 7 do menu
+    print("8 - Ver Últimas Ações")  # opção 8 do menu
+    print("0 - Sair")  # opção 0 do menu
+
+def cadastrar_nome_e_tipo_cliente(clientes):  
+    print("\n--- Cadastrar Nome e Tipo de Cliente ---")  # título da função
+    nome_cliente = input("Nome completo do Cliente: ")  # pede o nome do cliente
+    idade_cliente = input("Idade do Cliente: ")  # pede a idade do cliente
+    rg_cliente = input("RG do Cliente: ")  # pede o RG do cliente
+    escolha_tipo = input("Tipo de Cliente (1 - Doador, 2 - Requisitante): ")  # pede se é doador ou requisitante
+
+    if escolha_tipo == '1':  
+        tipo_cliente = 'Doador'  # se 1, define como doador
+    elif escolha_tipo == '2':  
+        tipo_cliente = 'Requisitante'  # se 2, define como requisitante
+    else:  
+        print("Tipo de cliente inválido.\n")  # se não for 1 ou 2, imprime aviso
+        return  # retorna sem cadastrar
+
+    novo_cliente = {  
+        'nome_cliente': nome_cliente,  # adiciona o nome no dicionário
+        'idade_cliente': idade_cliente,  # adiciona a idade
+        'rg_cliente': rg_cliente,  # adiciona o RG
+        'tipo_cliente': tipo_cliente  # adiciona o tipo do cliente
+    }
+
+    clientes.append(novo_cliente)  # adiciona o cliente na lista
+    print(f"Cliente {nome_cliente} ({tipo_cliente}) cadastrado com sucesso!\n")  # confirma cadastro
+
+def cadastrar_medicamentos(medicamentos, clientes, historico):  
+    print("\n--- Cadastrar Medicamento ---")  # título da função
+
+    doadores = [c for c in clientes if c['tipo_cliente'] == 'Doador']  # pega só os clientes doadores
+
+    if not doadores:  
+        print(" Nenhum doador cadastrado. Cadastre um primeiro.\n")  # se não tiver doadores, avisa
+        return  # sai da função
+
+    for i, d in enumerate(doadores, 1):  
+        print(f"{i}. {d['nome_cliente']}")  # mostra a lista de doadores numerada
+
+    try:  
+        escolha = int(input("Selecione o número do doador: "))  # pede para escolher doador
+        doador = doadores[escolha - 1]['nome_cliente']  # pega o nome do doador escolhido
+    except (ValueError, IndexError):  
+        print("Escolha inválida.\n")  # se digitar errado, avisa
+        return  # sai da função
+
+    id_medicamento = input("ID do Medicamento: ")  # pede ID do medicamento
+    nome = input("Nome do Medicamento: ")  # pede nome
+    quantidade = int(input("Quantidade: "))  # pede quantidade
+    validade = input("Validade (DD/MM/AAAA): ")  # pede validade
+    lote = input("Lote: ")  # pede lote
+
+    novo_medicamento = {  
+        'ID': id_medicamento,  # adiciona ID
+        'nome': nome,  # adiciona nome
+        'quantidade': quantidade,  # adiciona quantidade
+        'validade': validade,  # adiciona validade
+        'lote': lote,  # adiciona lote
+        'doador': doador  # adiciona o doador
+    }
+
+    medicamentos.append(novo_medicamento)  # adiciona na lista principal
+    arvore.inserir(nome, novo_medicamento)  # insere na árvore
+    historico.append({'tipo': 'Doação', 'cliente': doador, 'medicamento': nome, 'quantidade': quantidade})  # adiciona no histórico
+    pilha_acoes.append(f"Doação: {doador} → {nome} ({quantidade})")  # adiciona na pilha de ações
+
+    print(f"\nMedicamento '{nome}' cadastrado com sucesso por {doador}!\n")  # confirma cadastro
+
+
+# FUNÇÕES DE LISTAR, BUSCAR E REQUISITAR
+
+def listar_medicamentos():  
+    print("\n--- Lista de Medicamentos (Ordem Alfabética) ---")  # título
+    if arvore.raiz is None:  
+        print("Nenhum medicamento cadastrado.\n")  # se árvore vazia, avisa
+    else:  
+        arvore.listar_em_ordem(arvore.raiz)  # percorre a árvore em ordem alfabética
+
+def buscar_medicamento():  
+    print("\n--- Buscar Medicamento ---")  # título
+    nome_busca = input("Digite o nome do medicamento: ")  # pede o nome
+    resultado = arvore.buscar(nome_busca)  # busca na árvore
+
+    if resultado:  
+        print(f"Encontrado: {resultado['nome']} | Quantidade: {resultado['quantidade']} | Validade: {resultado['validade']} | Lote: {resultado['lote']}")  # se achou, imprime
+    else:  
+        print("Medicamento não encontrado.\n")  # se não achou, avisa
+
+def listar_clientes(clientes):  
+    print("\n--- Lista de Clientes ---")  # título
+    if not clientes:  
+        print("Nenhum cliente cadastrado.\n")  # se lista vazia, avisa
+        return  
+    for c in clientes:  
+        print(f"Nome: {c['nome_cliente']} | Idade: {c['idade_cliente']} | RG: {c['rg_cliente']} | Tipo: {c['tipo_cliente']}")  # imprime cada cliente
+
+def requisitar(medicamentos, clientes, historico):  
+    print("\n--- Requisitar Medicamento ---")  # título
+    requisitantes = [c for c in clientes if c['tipo_cliente'] == 'Requisitante']  # pega só requisitantes
+
+    if not requisitantes:  
+        print("⚠️ Nenhum requisitante cadastrado.\n")  # se não houver, avisa
+        return  
+
+    for i, c in enumerate(requisitantes, 1):  
+        print(f"{i}. {c['nome_cliente']}")  # imprime a lista numerada de requisitantes
+
+    try:  
+        escolha = int(input("Selecione o número do requisitante: "))  # pede escolha
+        requisitante = requisitantes[escolha - 1]['nome_cliente']  # pega o nome
+    except (ValueError, IndexError):  
+        print("Escolha inválida.\n")  # se digitar errado, avisa
+        return  
+
+    nome = input("Nome do medicamento: ")  # pede o nome do medicamento
+    id_med = input("ID do medicamento: ")  # pede o ID
+    qtd = int(input("Quantidade: "))  # pede quantidade a requisitar
+
+    for med in medicamentos:  
+        if med['nome'].lower() == nome.lower() and med['ID'] == id_med:  # se encontrou o medicamento correto
+            if med['quantidade'] >= qtd:  
+                med['quantidade'] -= qtd  # subtrai quantidade requisitada
+                historico.append({'tipo': 'Requisição', 'cliente': requisitante, 'medicamento': nome, 'quantidade': qtd})  # adiciona no histórico
+                pilha_acoes.append(f"Requisição: {requisitante} ← {nome} ({qtd})")  # adiciona na pilha
+                print(f"\nRequisição de {qtd} unidades do medicamento '{nome}' realizada com sucesso!\n")  # confirma
+                return  
+            else:  
+                print("Quantidade insuficiente.\n")  # se estoque não tiver suficiente
+                return  
+    print("Medicamento não encontrado.\n")  # se não encontrou no final
+
+def historico_requisicoes_e_doacoes(historico):  
+    print("\n--- Histórico de Requisições e Doações ---")  # título
+    if not historico:  
+        print("Nenhum registro encontrado.\n")  # se vazio
+        return  
+    for h in historico:  
+        print(f"{h['tipo']}: {h['cliente']} → {h['medicamento']} ({h['quantidade']} unidades)")  # imprime cada registro
+
+def ver_ultimas_acoes():  
+    print("\n--- Últimas Ações ---")  # título
+    if not pilha_acoes:  
+        print("Nenhuma ação registrada ainda.\n")  # se pilha vazia
+    else:  
+        for acao in reversed(pilha_acoes[-5:]):  # mostra as últimas 5 ações
+            print(acao, "\n")  # imprime cada ação
+
+
+# LOOP PRINCIPAL DO PROGRAMA
+
+while True:  
+    menu()  # mostra o menu
+    opcao = input("Escolha uma opção: ")  # lê opção do usuário
+
+    if opcao == '1':  
+        cadastrar_medicamentos(medicamentos, clientes, historico)  # chama cadastro de medicamentos
+    elif opcao == '2':  
+        listar_medicamentos()  # chama listagem em ordem
+    elif opcao == '3':  
+        buscar_medicamento()  # chama busca
+    elif opcao == '4':  
+        requisitar(medicamentos, clientes, historico)  # chama requisição
+    elif opcao == '5':  
+        cadastrar_nome_e_tipo_cliente(clientes)  # chama cadastro de cliente
+    elif opcao == '6':  
+        listar_clientes(clientes)  # lista clientes
+    elif opcao == '7':  
+        historico_requisicoes_e_doacoes(historico)  # mostra histórico completo
+    elif opcao == '8':  
+        ver_ultimas_acoes()  # mostra pilha de últimas ações
+    elif opcao == '0':  
+        print("Saindo do sistema...")  # mensagem de saída
+        break  # sai do loop
+    else:  
+        print("Opção inválida.\n")  # caso escolha inválida
+
+    input("Pressione Enter para continuar...")  # pausa para o usuário ver o resultado antes de continuar
