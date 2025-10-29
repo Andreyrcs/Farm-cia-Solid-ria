@@ -1,103 +1,71 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-// Estruturas básicas
+// Definição da estrutura Medicamento
 typedef struct {
-    int codigo;
-    char nome[50];
-    char principioAtivo[50];
-    char fabricante[50];
-    float preco;
-    int quantidade;
-    char validade[11];
+    int codigo;              // Código do medicamento
+    char nome[50];           // Nome do medicamento
+    char principioAtivo[50]; // Princípio ativo do medicamento
+    char fabricante[50];     // Fabricante do medicamento
+    float preco;             // Preço do medicamento
+    int quantidade;          // Quantidade em estoque
+    char validade[11];       // Data de validade (formato dd/mm/aaaa)
 } Medicamento;
 
-typedef struct {
-    int id;
-    char nome[50];
-    char telefone[20];
-} Cliente;
-
-// Protótipos de funções
+// Protótipos das funções usadas no programa
 void menuPrincipal();
-void telaLogin();
 void menuMedicamentos();
-void menuVendas();
-void menuRelatorios();
 void cadastrarMedicamento();
 void listarMedicamentos();
-void limparTela();
 
-// Variáveis globais (apenas para simulação)
-Medicamento estoque[100];
-int totalMedicamentos = 0;
 
+// Variáveis globais para armazenar os medicamentos
+Medicamento estoque[100];   // Array para guardar até 100 medicamentos
+int totalMedicamentos = 0;  // Quantidade de medicamentos cadastrados
+
+// Função principal - ponto de entrada do programa
 int main() {
-    telaLogin();
+    menuPrincipal();  // Inicia o programa pelo menu principal
     return 0;
 }
 
-// ==== TELA DE LOGIN ====
-void telaLogin() {
-    char usuario[30], senha[20];
-
-    limparTela();
-    printf("===========================================\n");
-    printf("     💊 SISTEMA DE FARMÁCIA COMUNITÁRIA     \n");
-    printf("===========================================\n");
-    printf("Usuário: ");
-    scanf("%s", usuario);
-    printf("Senha: ");
-    scanf("%s", senha);
-
-    // Validação simples
-    if (strcmp(usuario, "admin") == 0 && strcmp(senha, "1234") == 0) {
-        printf("\nLogin realizado com sucesso!\n");
-        system("pause");
-        menuPrincipal();
-    } else {
-        printf("\nUsuário ou senha incorretos!\n");
-        system("pause");
-        telaLogin();
-    }
-}
-
-// ==== MENU PRINCIPAL ====
+// Função que mostra o menu principal e lê a opção do usuário
 void menuPrincipal() {
     int opcao;
 
     do {
-        limparTela();
+       
         printf("===========================================\n");
         printf("        MENU PRINCIPAL - FARMÁCIA          \n");
         printf("===========================================\n");
         printf("1. Medicamentos\n");
-        printf("2. Vendas\n");
-        printf("3. Relatórios\n");
         printf("0. Sair\n");
         printf("-------------------------------------------\n");
         printf("Escolha uma opção: ");
         scanf("%d", &opcao);
 
         switch (opcao) {
-            case 1: menuMedicamentos(); break;
-            case 2: menuVendas(); break;
-            case 3: menuRelatorios(); break;
-            case 0: printf("Encerrando o sistema...\n"); break;
-            default: printf("Opção inválida!\n"); system("pause");
+            case 1:
+                menuMedicamentos();  // Chama o menu de medicamentos
+                break;
+            case 0:
+                printf("Encerrando o sistema...\n");
+                break;
+            default:
+                printf("Opção inválida! Tente novamente.\n");
+                system("pause");  // Espera o usuário pressionar uma tecla
         }
     } while (opcao != 0);
 }
 
-// ==== MENU DE MEDICAMENTOS ====
+// Função que mostra o menu de medicamentos
 void menuMedicamentos() {
     int opcao;
 
     do {
-        limparTela();
-        printf("===========================================\n");
+        
+        printf("\n\n===========================================\n");
         printf("         MENU DE MEDICAMENTOS              \n");
         printf("===========================================\n");
         printf("1. Cadastrar Medicamento\n");
@@ -108,24 +76,33 @@ void menuMedicamentos() {
         scanf("%d", &opcao);
 
         switch (opcao) {
-            case 1: cadastrarMedicamento(); break;
-            case 2: listarMedicamentos(); break;
-            case 0: break;
-            default: printf("Opção inválida!\n"); system("pause");
+            case 1:
+                cadastrarMedicamento();  // Chama função para cadastrar um medicamento
+                break;
+            case 2:
+                listarMedicamentos();    // Chama função para listar os medicamentos cadastrados
+                break;
+            case 0:
+                // Voltar para o menu principal
+                break;
+            default:
+                printf("Opção inválida! Tente novamente.\n");
+                system("pause");
         }
     } while (opcao != 0);
 }
 
-// ==== CADASTRO DE MEDICAMENTO ====
+// Função para cadastrar um novo medicamento no estoque
 void cadastrarMedicamento() {
-    limparTela();
+    
     printf("=== CADASTRAR NOVO MEDICAMENTO ===\n");
     Medicamento m;
 
+    // Leitura dos dados do medicamento
     printf("Código: ");
     scanf("%d", &m.codigo);
     printf("Nome: ");
-    scanf(" %[^\n]", m.nome);
+    scanf(" %[^\n]", m.nome); // Leitura que aceita espaços
     printf("Princípio ativo: ");
     scanf(" %[^\n]", m.principioAtivo);
     printf("Fabricante: ");
@@ -137,16 +114,19 @@ void cadastrarMedicamento() {
     printf("Data de validade (dd/mm/aaaa): ");
     scanf("%s", m.validade);
 
+    // Armazena o medicamento no array e atualiza o total
     estoque[totalMedicamentos++] = m;
+
     printf("\nMedicamento cadastrado com sucesso!\n");
     system("pause");
 }
 
-// ==== LISTAGEM DE MEDICAMENTOS ====
+// Função para mostrar a lista de medicamentos cadastrados
 void listarMedicamentos() {
-    limparTela();
+    
     printf("=== LISTA DE MEDICAMENTOS ===\n\n");
 
+    // Verifica se há medicamentos cadastrados
     if (totalMedicamentos == 0) {
         printf("Nenhum medicamento cadastrado.\n");
     } else {
@@ -164,31 +144,11 @@ void listarMedicamentos() {
     system("pause");
 }
 
-// ==== MENU DE VENDAS ====
-void menuVendas() {
-    limparTela();
-    printf("=== REGISTRO DE VENDA ===\n");
-    printf("Função em prototipação...\n");
-    printf("Futuramente: busca de produtos, inserção e pagamento.\n");
-    system("pause");
-}
-
-// ==== MENU DE RELATÓRIOS ====
-void menuRelatorios() {
-    limparTela();
-    printf("=== RELATÓRIOS ===\n");
-    printf("1. Vendas do Dia\n");
-    printf("2. Estoque Baixo\n");
-    printf("3. Financeiro\n");
-    printf("\nFunção em prototipação...\n");
-    system("pause");
-}
-
-// ==== FUNÇÃO DE LIMPEZA DE TELA ====
+// Função para limpar a tela do terminal, dependendo do sistema operacional
 void limparTela() {
 #ifdef _WIN32
-    system("cls");
+    system("cls");  // Windows
 #else
-    system("clear");
+    system("clear");  // Linux/Unix/Mac
 #endif
 }
