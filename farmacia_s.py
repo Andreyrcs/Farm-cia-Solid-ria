@@ -3,7 +3,6 @@
 medicamentos = []  # lista que vai armazenar todos os medicamentos cadastrados
 clientes = []      # lista que vai armazenar os clientes doador ou requisitante
 historico = []     # lista que vai guardar o histórico geral de doações e requisições
-pilha_acoes = []   # pilha que vai armazenar as últimas ações feitas, tipo um histórico rápido
 
 
 # CLASSE DO NÓ DA ÁRVORE BINÁRIA
@@ -78,7 +77,6 @@ def menu():
     print("5 - Cadastrar Nome e Tipo de Cliente")  # opção 5 do menu
     print("6 - Listar Clientes")  # opção 6 do menu
     print("7 - Histórico de Requisições e Doações")  # opção 7 do menu
-    print("8 - Ver Últimas Ações")  # opção 8 do menu
     print("0 - Sair")  # opção 0 do menu
 
 def cadastrar_nome_e_tipo_cliente(clientes):  
@@ -143,7 +141,6 @@ def cadastrar_medicamentos(medicamentos, clientes, historico):
     medicamentos.append(novo_medicamento)  # adiciona na lista principal
     arvore.inserir(nome, novo_medicamento)  # insere na árvore
     historico.append({'tipo': 'Doação', 'cliente': doador, 'medicamento': nome, 'quantidade': quantidade})  # adiciona no histórico
-    pilha_acoes.append(f"Doação: {doador} → {nome} ({quantidade})")  # adiciona na pilha de ações
 
     print(f"\nMedicamento '{nome}' cadastrado com sucesso por {doador}!\n")  # confirma cadastro
 
@@ -202,7 +199,7 @@ def requisitar(medicamentos, clientes, historico):
             if med['quantidade'] >= qtd:  
                 med['quantidade'] -= qtd  # subtrai quantidade requisitada
                 historico.append({'tipo': 'Requisição', 'cliente': requisitante, 'medicamento': nome, 'quantidade': qtd})  # adiciona no histórico
-                pilha_acoes.append(f"Requisição: {requisitante} ← {nome} ({qtd})")  # adiciona na pilha
+        
                 print(f"\nRequisição de {qtd} unidades do medicamento '{nome}' realizada com sucesso!\n")  # confirma
                 return  
             else:  
@@ -218,13 +215,7 @@ def historico_requisicoes_e_doacoes(historico):
     for h in historico:  
         print(f"{h['tipo']}: {h['cliente']} → {h['medicamento']} ({h['quantidade']} unidades)")  # imprime cada registro
 
-def ver_ultimas_acoes():  
-    print("\n--- Últimas Ações ---")  # título
-    if not pilha_acoes:  
-        print("Nenhuma ação registrada ainda.\n")  # se pilha vazia
-    else:  
-        for acao in reversed(pilha_acoes[-5:]):  # mostra as últimas 5 ações
-            print(acao, "\n")  # imprime cada ação
+
 
 
 # LOOP PRINCIPAL DO PROGRAMA
@@ -247,8 +238,6 @@ while True:
         listar_clientes(clientes)  # lista clientes
     elif opcao == '7':  
         historico_requisicoes_e_doacoes(historico)  # mostra histórico completo
-    elif opcao == '8':  
-        ver_ultimas_acoes()  # mostra pilha de últimas ações
     elif opcao == '0':  
         print("Saindo do sistema...")  # mensagem de saída
         break  # sai do loop
