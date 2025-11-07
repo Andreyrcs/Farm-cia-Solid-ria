@@ -39,7 +39,7 @@ void menuMedicamentos() {
                 break;
             default:
                 printf("Opção inválida! Tente novamente.\n");
-                system("pause");
+               pauseConsole();
         }
     } while (opcao != 0);
 }
@@ -70,7 +70,7 @@ void cadastrarMedicamento() {
     estoque[totalMedicamentos++] = m;
 
     printf("\nMedicamento cadastrado com sucesso!\n");
-    system("pause");
+    pauseConsole();
 }
 
 // Função para mostrar a lista de medicamentos cadastrados
@@ -93,14 +93,7 @@ void listarMedicamentos() {
         }
     }
     printf("\n");
-    system("pause");
+   pauseConsole();
 }
 
-// Função para limpar a tela do terminal, dependendo do sistema operacional
-void limparTela() {
-#ifdef _WIN32
-    system("cls");  // Windows
-#else
-    system("clear");  // Linux/Unix/Mac
-#endif
-}
+

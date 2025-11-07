@@ -6,6 +6,8 @@ void menuPrincipal();
 
 // Função principal - ponto de entrada do programa
 int main() {
+   printf("Pressione ENTER para continuar...");
+    getchar(); // espera o Enter
     menuPrincipal();  // Inicia o programa pelo menu principal
     return 0;
 }
@@ -15,7 +17,7 @@ void menuPrincipal() {
     int opcao;
 
     do {
-       
+        
         printf("===========================================\n");
         printf("        MENU PRINCIPAL - FARMÁCIA          \n");
         printf("===========================================\n");
@@ -34,6 +36,9 @@ void menuPrincipal() {
                 break;
             default:
                 printf("Opção inválida! Tente novamente.\n");
+
+                pauseConsole();
+
         }
     } while (opcao != 0);
 }

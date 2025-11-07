@@ -9,8 +9,6 @@ historico = []     # lista que vai guardar o histórico geral de doações e req
 
 import os  # importa biblioteca para executar comandos do sistema (como limpar a tela)
 
-def limpar_tela():  
-    os.system('cls' if os.name == 'nt' else 'clear')  # limpa a tela: 'cls' no Windows, 'clear' no Linux/Mac
     
 while True:  
     limpar_tela()  # chama a função para limpar a tela
