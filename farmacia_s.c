@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "medicamentos.h"
+#include "medicamentos.h.c"
 
 void menuPrincipal();
 
