@@ -11,7 +11,7 @@ import os  # importa biblioteca para executar comandos do sistema (como limpar a
 
     
 while True:  
-    limpar_tela()  # chama a função para limpar a tela
+ 
     print("\n      Farmacia Solidária     \n")  # imprime o título do sistema
     break  # sai do loop após limpar a tela e mostrar o título
 
@@ -72,7 +72,7 @@ def menu():
     print("2 - Listar Medicamentos em ordem")  # opção 2 do menu
     print("3 - Buscar Medicamento por Nome")  # opção 3 do menu
     print("4 - Requisitar Medicamento")  # opção 4 do menu
-    print("5 - Cadastrar Nome e Tipo de Cliente")  # opção 5 do menu
+    print("5 - Cadastrar Cliente")  # opção 5 do menu
     print("6 - Listar Clientes")  # opção 6 do menu
     print("7 - Histórico de Requisições e Doações")  # opção 7 do menu
     print("0 - Sair")  # opção 0 do menu
@@ -80,9 +80,10 @@ def menu():
 def cadastrar_nome_e_tipo_cliente(clientes):  
     print("\n--- Cadastrar Nome e Tipo de Cliente ---")  # título da função
     nome_cliente = input("Nome completo do Cliente: ")  # pede o nome do cliente
-    idade_cliente = input("Idade do Cliente: ")  # pede a idade do cliente
+    idade_cliente = int(input("Idade do Cliente: "))  # pede a idade do cliente
     rg_cliente = input("RG do Cliente: ")  # pede o RG do cliente
     escolha_tipo = input("Tipo de Cliente (1 - Doador, 2 - Requisitante): ")  # pede se é doador ou requisitante
+    numero_celular = int(input("Número do Cliente: ")) # pede o Número do cliente
 
     if escolha_tipo == '1':  
         tipo_cliente = 'Doador'  # se 1, define como doador
@@ -96,7 +97,8 @@ def cadastrar_nome_e_tipo_cliente(clientes):
         'nome_cliente': nome_cliente,  # adiciona o nome no dicionário
         'idade_cliente': idade_cliente,  # adiciona a idade
         'rg_cliente': rg_cliente,  # adiciona o RG
-        'tipo_cliente': tipo_cliente  # adiciona o tipo do cliente
+        'tipo_cliente': tipo_cliente,  # adiciona o tipo do cliente
+        'numero_celular': numero_celular
     }
 
     clientes.append(novo_cliente)  # adiciona o cliente na lista
@@ -168,7 +170,7 @@ def listar_clientes(clientes):
         print("Nenhum cliente cadastrado.\n")  # se lista vazia, avisa
         return  
     for c in clientes:  
-        print(f"Nome: {c['nome_cliente']} | Idade: {c['idade_cliente']} | RG: {c['rg_cliente']} | Tipo: {c['tipo_cliente']}")  # imprime cada cliente
+        print(f"Nome: {c['nome_cliente']} | Idade: {c['idade_cliente']} | RG: {c['rg_cliente']} | Tipo: {c['tipo_cliente']} | Número: {c['numero_celular']}")  # imprime cada cliente
 
 def requisitar(medicamentos, clientes, historico):  
     print("\n--- Requisitar Medicamento ---")  # título
