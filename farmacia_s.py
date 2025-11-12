@@ -28,11 +28,12 @@ class NoMedicamento:
 class ArvoreMedicamentos:  
     def __init__(self):  
         self.raiz = None  # define a raiz da árvore como vazia no começo
+        self.med_id = 0
 
     def inserir(self, nome, dados):  
         self.raiz = self._inserir_recursivo(self.raiz, nome, dados)  # chama a função recursiva para inserir o nó
 
-    def _inserir_recursivo(self, no, nome, dados):  
+    def _inserir_recursivo(self, no, nome, dados): 
         if no is None:  
             return NoMedicamento(nome, dados)  # se não existir nó, cria um novo nó com o nome e dados
         if nome.lower() < no.nome.lower():  
@@ -58,11 +59,13 @@ class ArvoreMedicamentos:
 
     def listar_em_ordem(self, no):  
         if no:  
-            self.listar_em_ordem(no.esquerda)  # percorre primeiro o lado esquerdo
-            print(f"Nome: {no.nome} | Quantidade: {no.dados['quantidade']} | Validade: {no.dados['validade']} | Lote: {no.dados['lote']}")  # imprime o nó atual
+            self.listar_em_ordem(no.esquerda)# percorre primeiro o lado esquerdo
+            # incrementa o contador a cada medicamento listado
+            self.med_id += 1
+            print(f"{self.med_id}. Nome: {no.nome} | Quantidade: {no.dados['quantidade']} | Validade: {no.dados['validade']} | Lote: {no.dados['lote']}")  # imprime o nó atual
             self.listar_em_ordem(no.direita)  # percorre depois o lado direito
 
-arvore = ArvoreMedicamentos()  # cria a árvore de medicamentos vazia
+medicamento = ArvoreMedicamentos()  # cria a árvore de medicamentos vazia
 
 
 # FUNÇÕES DO SISTEMA
@@ -83,7 +86,7 @@ def cadastrar_nome_e_tipo_cliente(clientes):
     idade_cliente = int(input("Idade do Cliente: "))  # pede a idade do cliente
     rg_cliente = input("RG do Cliente: ")  # pede o RG do cliente
     escolha_tipo = input("Tipo de Cliente (1 - Doador, 2 - Requisitante): ")  # pede se é doador ou requisitante
-    numero_celular = int(input("Número do Cliente: ")) # pede o Número do cliente
+    numero_celular = input("Número de celular do Cliente: ") # pede o Número do cliente
 
     if escolha_tipo == '1':  
         tipo_cliente = 'Doador'  # se 1, define como doador
@@ -123,14 +126,12 @@ def cadastrar_medicamentos(medicamentos, clientes, historico):
         print("Escolha inválida.\n")  # se digitar errado, avisa
         return  # sai da função
 
-    id_medicamento = input("ID do Medicamento: ")  # pede ID do medicamento
     nome = input("Nome do Medicamento: ")  # pede nome
     quantidade = int(input("Quantidade: "))  # pede quantidade
     validade = input("Validade (DD/MM/AAAA): ")  # pede validade
     lote = input("Lote: ")  # pede lote
 
     novo_medicamento = {  
-        'ID': id_medicamento,  # adiciona ID
         'nome': nome,  # adiciona nome
         'quantidade': quantidade,  # adiciona quantidade
         'validade': validade,  # adiciona validade
@@ -139,7 +140,7 @@ def cadastrar_medicamentos(medicamentos, clientes, historico):
     }
 
     medicamentos.append(novo_medicamento)  # adiciona na lista principal
-    arvore.inserir(nome, novo_medicamento)  # insere na árvore
+    medicamento.inserir(nome, novo_medicamento)  # insere na árvore
     historico.append({'tipo': 'Doação', 'cliente': doador, 'medicamento': nome, 'quantidade': quantidade})  # adiciona no histórico
 
     print(f"\nMedicamento '{nome}' cadastrado com sucesso por {doador}!\n")  # confirma cadastro
@@ -147,17 +148,38 @@ def cadastrar_medicamentos(medicamentos, clientes, historico):
 
 # FUNÇÕES DE LISTAR, BUSCAR E REQUISITAR
 
-def listar_medicamentos():  
-    print("\n--- Lista de Medicamentos (Ordem Alfabética) ---")  # título
-    if arvore.raiz is None:  
-        print("Nenhum medicamento cadastrado.\n")  # se árvore vazia, avisa
-    else:  
-        arvore.listar_em_ordem(arvore.raiz)  # percorre a árvore em ordem alfabética
+def listar_medicamentos(list_medicamentos, opcao="cadastro"):
+    # Exibe o título da seção
+    print("\n--- Lista de Medicamentos ---")
+    
+    # Se a lista de medicamentos estiver vazia, avisa o usuário e sai da função
+    if not list_medicamentos:
+        print("Nenhum medicamento cadastrado.\n")
+        return
+
+    # Verifica como o usuário quer listar:
+    # Se a opção for "nome", ordena alfabeticamente
+    if opcao == "nome":
+        # Usa 'sorted' para criar uma nova lista ordenada por nome (ignorando maiúsculas/minúsculas)
+        lista_ordenada = sorted(list_medicamentos, key=lambda m: m["nome"].lower())
+        print("(Ordenado por nome)\n")
+    else:
+        # Caso contrário, mantém a lista na ordem em que foi cadastrada
+        lista_ordenada = list_medicamentos
+        print("(Ordem de cadastro)\n")
+
+    # Percorre cada medicamento da lista (ordenada ou não)
+    # 'enumerate' serve pra numerar automaticamente a listagem (1, 2, 3, ...)
+    for i, med in enumerate(lista_ordenada, 1):
+        # Exibe os detalhes do medicamento formatados
+        print(f"{i}. Nome: {med['nome']} | Quantidade: {med['quantidade']} | "
+              f"Validade: {med['validade']} | Lote: {med['lote']}")
+
 
 def buscar_medicamento():  
     print("\n--- Buscar Medicamento ---")  # título
     nome_busca = input("Digite o nome do medicamento: ")  # pede o nome
-    resultado = arvore.buscar(nome_busca)  # busca na árvore
+    resultado = medicamento.buscar(nome_busca)  # busca na árvore
 
     if resultado:  
         print(f"Encontrado: {resultado['nome']} | Quantidade: {resultado['quantidade']} | Validade: {resultado['validade']} | Lote: {resultado['lote']}")  # se achou, imprime
@@ -177,7 +199,7 @@ def requisitar(medicamentos, clientes, historico):
     requisitantes = [c for c in clientes if c['tipo_cliente'] == 'Requisitante']  # pega só requisitantes
 
     if not requisitantes:  
-        print("⚠️ Nenhum requisitante cadastrado.\n")  # se não houver, avisa
+        print("Nenhum requisitante cadastrado.\n")  # se não houver, avisa
         return  
 
     for i, c in enumerate(requisitantes, 1):  
@@ -226,18 +248,37 @@ while True:
 
     if opcao == '1':  
         cadastrar_medicamentos(medicamentos, clientes, historico)  # chama cadastro de medicamentos
-    elif opcao == '2':  
-        listar_medicamentos()  # chama listagem em ordem
-    elif opcao == '3':  
-        buscar_medicamento()  # chama busca
+        continue
+        
+    elif opcao == '2':
+        escolha = input("Listar por (1) ordem de cadastro ou (2) nome? ")
+
+        if escolha == '2':
+            listar_medicamentos(medicamentos, "nome")
+        else:
+            listar_medicamentos(medicamentos, "cadastro")
+            continue
+
+    if opcao == '3':  
+        buscar_medicamento()
+        continue # chama busca
+    
     elif opcao == '4':  
         requisitar(medicamentos, clientes, historico)  # chama requisição
+        continue
+        
     elif opcao == '5':  
         cadastrar_nome_e_tipo_cliente(clientes)  # chama cadastro de cliente
+        continue
+        
     elif opcao == '6':  
         listar_clientes(clientes)  # lista clientes
+        continue
+        
     elif opcao == '7':  
         historico_requisicoes_e_doacoes(historico)  # mostra histórico completo
+        continue
+        
     elif opcao == '0':  
         print("Saindo do sistema...")  # mensagem de saída
         break  # sai do loop
