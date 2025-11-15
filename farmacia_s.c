@@ -37,7 +37,7 @@ void menuPrincipal() {
             default:
                 printf("Opção inválida! Tente novamente.\n");
 
-                pauseConsole();
+                
 
         }
     } while (opcao != 0);

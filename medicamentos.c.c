@@ -93,7 +93,7 @@ void listarMedicamentos() {
         }
     }
     printf("\n");
-   pauseConsole();
+  
 }
 
 
