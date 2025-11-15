@@ -70,7 +70,6 @@ void cadastrarMedicamento() {
     estoque[totalMedicamentos++] = m;
 
     printf("\nMedicamento cadastrado com sucesso!\n");
-    pauseConsole();
 }
 
 // Função para mostrar a lista de medicamentos cadastrados
