@@ -39,7 +39,7 @@ void menuMedicamentos() {
                 break;
             default:
                 printf("Opção inválida! Tente novamente.\n");
-               pauseConsole();
+              
         }
     } while (opcao != 0);
 }
